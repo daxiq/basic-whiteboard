@@ -105,9 +105,9 @@
 		var url = URL.createObjectURL(e.target.files[0]);
 		var img = new Image();
 		img.onload = () =>{
-			ctx.scale(.3,.3);
-			ctx.drawImage(img,1,1);
-			ctx.scale(3.335,3.335);
+			// ctx.scale(10 / img.width, 10 / img.height);
+			ctx.drawImage(img,0,0, img.width, img.height,0,0,img.width/1.5,img.height/1.5);
+			// ctx.scale(2,2);
 		}
 		img.src = url;
 	}
