@@ -2,7 +2,7 @@
 	'use strict'
 
 	var h, w, lastX, currX, lastY, currY, draw, download;
-	var color=0, stroke, mirror, rubber, rainbow, round;
+	var color=0, stroke, mirror, rubber, rainbow, style;
 	var canvas = document.querySelector('#canvas');
 	var ctx = canvas.getContext('2d');
 
@@ -32,21 +32,21 @@
 
 	var setColor = () =>{
 		let color = document.querySelector('#color').value;
+		let hex = document.querySelector('#hex');
 		ctx.strokeStyle = color;
+		hex.innerText = color;
 	}
 	var setStroke = () =>{
 		stroke = document.querySelector('#b-size').value;
 		ctx.lineWidth = stroke;
+		document.querySelector('#size').innerText=stroke +' px';
 	}
 
-	var setStyle = () =>{
-		round = document.querySelector('#style-round');
-		if (round.checked == true) {
-			ctx.lineJoin = 'round';
-			ctx.lineCap = 'round';
-		}else{
-			ctx.lineCap = 'square';
-		}
+	var setStyle = (event) =>{
+		style = event.target.value;
+		ctx.lineJoin = style;
+		ctx.lineCap = style;
+		console.log(style);
 	}
 
 	var drawLine = () =>{
@@ -120,6 +120,7 @@
 				img_w = max_w;
 				img_h = Math.floor(img.height * (img_w / img.width))
 			}else{
+				//The image is square
 				img_h = max_h;
 				img_w = max_h;
 			}
