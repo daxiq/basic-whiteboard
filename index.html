@@ -2,113 +2,80 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Task 5</title>
-	<link rel="stylesheet" href="font-awesome/css/fontawesome.css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
 	<link rel="stylesheet" type="text/css" href="./css/style.css">
+	<title>Basic Whiteboard using canvas</title>
 </head>
 <body>
 	<main>
-		<div id="left">
-			<h2>Tools</h2>
-			<hr>
-			<div class="card">
-				<h3>Brush</h3>
-				<h4>Stroke <span id="size">1px</span></h4>
-				<div class="d-flex align-center">
-					<!-- <label>Size</label> -->
-					<input type="range" min="1" max="50" value="1" oninput="setStroke()" id="b-size" name="b-size">
-				</div>
-				
-				
-				<h4 for="b-size">Style</h4>
-				<div class="d-flex">
-					<div>
-						<input type="radio" id="style-none" name="brush-style" value="square" checked  onchange="setStyle(event)"> Square <br>
-					</div>
-					<div>
-						<input type="radio" id="style-round" name="brush-style" value="round" onchange="setStyle(event)" > Round <br>
-					</div>
-					<div>
-						<input type="radio" id="style-butt" name="brush-style" value="butt" onchange="setStyle(event)" > Butt <br>
-					</div>
-				</div>
-			</div>
-				
-			<div class="card">
-				<h3>Brush Modes</h3>
-
-				<div class="d-flex">
-					<div>
-						<input type="checkbox" min="1" max="20" value="1" id="rainbow" name="rainbow" onchange="if(this.checked){}else{setColor()}">
-						<label for="rainbow">Rainbow</label>
-					</div>
-					<div>
-						<input type="checkbox" id="mirror" name="mirror" onchange="if(this.checked){}else{setColor()}">
-						<label for="mirror">Mirror</label>
-					</div>
-					<div>
-						<input type="checkbox" id="rubber" name="rubber">
-						<label for="rubber">Eraser</label>
-					</div>
-				</div>
-			</div>
-			<!--
-			<div class="card">
-				<h3>Shapes</h3>
-				
-				<p>Shapes</p>
-				<label for="stroke-shape">Stroke</label>
-				<input type="checkbox" id="stroke-shape" name="stroke-shape">
-				<label for="fill">Fill</label>
-				<input type="checkbox" id="fill" name="fill">
-				<label for="size">Size</label>
-				<input type="range" id="size" min="20" max="250" value="150">
-				<button onclick="drawRectangle()">Draw Rectangle</button>
-				<button onclick="drawCircle()">Draw Circle</button>
-			</div>	
-			-->
-			
-			<div class="card">
-				<h3>Color</h3>
-				<div class="d-flex align-center">
-					<input type="color" onchange="setColor()" id="color" name="color" value="#38d7d7">
-					<label for="color" id="hex">#38d7d7</label>
-				</div>
-				
-				<!-- <label for="img">Place Image</label>
-					<input type="file" id="img" name="img" onchange="drawIMG(event)"> -->
-					
-			</div>
-
-			<div class="card">
-				<h3>Actions</h3>
-				<div class="buttons">
-					<div class="btn-group d-flex align-center">
-						<label for="selectImg" class="btn btn-primary">
+			<section id="left">
+				<div class="tools">
+					<button class="btn active" id="btn-pencil" onclick="setPencil()">
+						<i class="fas fa-pencil-alt"></i>
+					</button>
+					<button class="btn" id="btn-rubber" onclick="setRubber()">
+						<i class="fas fa-eraser"></i>
+					</button>
+					<hr>
+					<button class="btn" id="btn-adjusts" onclick="toggleAdjustsPanel()">
+						<i class="fas fa-sliders-h"></i>
+					</button>
+					<button class="btn" id="btn-rainbow" onclick="toggleRainbow()">
+						<i class="fas fa-rainbow"></i>
+					</button>
+					<button class="btn" id="btn-mirror" onclick="toggleMirror()">
+						<i class="fas fa-grip-lines-vertical"></i>
+					</button>
+					<hr>
+					<input type="color" onchange="setColor()" id="color" name="color" value="#000">
+					<hr>
+					<label class="btn" for="selectImg">
 							<span class="fa fa-file-image"></span>
 							<input type="file" id="selectImg" name="selectImg" onchange="drawIMG(event)">
-						</label>
-						<p>Place image</p>
-					</div>
-					<div class="btn-group d-flex align-center">
-						<button class="btn btn-primary" onclick="clearCanvas()">
-							<span class="fa fa-trash"></span>
-						</button>
-						<p>Clear board</p>
-					</div>
-					<div class="btn-group d-flex align-center">
-						<button class="btn btn-primary" onclick="downloadCanvas()">
-							<span class="fa fa-download"></span>
-						</button>
-						<p>Download as image</p>
-					</div>
+					</label>
+					<button class="btn" onclick="clearCanvas()">
+						<span class="fa fa-trash"></span>
+					</button>
+					<button class="btn" onclick="downloadCanvas()">
+						<span class="fa fa-download"></span>
+					</button>
 				</div>
-			</div>
-		</div>
-		<div id="right">
-			<canvas id="canvas" height="600" width="1000"></canvas>
-		</div>
+			</section>
+			<section id="right">
+				<canvas id="canvas" height="600" width="1000"></canvas>
+			</section>
+			<section class="panel" id="adjusts-panel" role="tooltip">
+				<div class="backdrop" onclick="toggleAdjustsPanel()"></div>
+				<div class="overlay">
+					<h4>Brush settings</h4>
+					<p>Stroke</p>
+					<div class="d-flex align-center">
+						<input type="range" min="1" max="50" value="1" oninput="setStroke()" id="b-size" name="b-size">
+						<p><span id="size">1px</span></p>
+					</div>
+					<p for="b-size">Style</p>
+					<div class="d-flex styles-wrapper">
+						<div>
+							<input type="radio" id="style-butt" name="brush-style" value="butt" checked onchange="setStyle(event)" >
+							<label for="style-butt">Butt</label>
+						</div>
+						<div>
+							<input type="radio" id="style-round" name="brush-style" value="round" onchange="setStyle(event)" >
+							<label for="style-round">Round</label>
+						</div>
+						<div>
+							<input type="radio" id="style-square" name="brush-style" value="square"  onchange="setStyle(event)">
+							<label for="style-square">Square</label>
+						</div>
+				</div>
+			</section>
+			<!-- Cursores custom -->
+			<div aria-hidden="true" id="c-cursor" class="custom-cursor"></div>
+			<div aria-hidden="true" id="c-cursor-mirror" class="custom-cursor mirror"></div>
 	</main>
 	<script src="./js/script.js"></script>
+	<noscript>JS disabled :(</noscript>
 	</body>
 </html>
